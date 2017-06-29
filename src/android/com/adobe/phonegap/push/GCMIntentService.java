@@ -210,7 +210,7 @@ public class GCMIntentService extends GcmListenerService implements PushConstant
 
             // If normalizeKeythe key is "data" or "message" and the value is a json object extract
             // This is to support parse.com and other services. Issue #147 and pull #218
-            if (key.equals(PARSE_COM_DATA) || key.equals(MESSAGE) || key.equals(messageKey)) {
+            if (key.equals(PARSE_COM_DATA) || key.equals(MESSAGE) || key.equals(messageKey) || key.equals("payload")) {
                 Object json = extras.get(key);
                 // Make sure data is json object stringified
                 if ( json instanceof String && ((String) json).startsWith("{") ) {
@@ -218,6 +218,9 @@ public class GCMIntentService extends GcmListenerService implements PushConstant
                     try {
                         // If object contains message keys promote each value to the root of the bundle
                         JSONObject data = new JSONObject((String) json);
+                        if(data.has("android")){
+                            data=data.getJSONObject("android");
+                        }
                         if ( data.has(ALERT) || data.has(MESSAGE) || data.has(BODY) || data.has(TITLE) ||
                             data.has(messageKey) || data.has(titleKey) ) {
                             Iterator<String> jsonIter = data.keys();
