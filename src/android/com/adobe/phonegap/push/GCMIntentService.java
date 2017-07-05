@@ -219,7 +219,11 @@ public class GCMIntentService extends GcmListenerService implements PushConstant
                         // If object contains message keys promote each value to the root of the bundle
                         JSONObject data = new JSONObject((String) json);
                         if(data.has("android")){
-                            data=data.getJSONObject("android");
+                            JSONObject tempJson=data.getJSONObject("android");
+                            Log.d(LOG_TAG, tempJson.getString("alert"));
+                            //Log.d(LOG_TAG,duplicateData.getJSONObject("alert"));
+                            data.put("alert",tempJson.getString("alert"));//data=data.getJSONObject("android");
+
                         }
                         if ( data.has(ALERT) || data.has(MESSAGE) || data.has(BODY) || data.has(TITLE) ||
                             data.has(messageKey) || data.has(titleKey) ) {
